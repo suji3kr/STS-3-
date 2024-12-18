@@ -1,6 +1,21 @@
-에너 테이션 사용으로 스프링 컨테이너에 주입 시킨다
-+ component- scan 
-= 의존성 주입 
+
+--------------------------------------------------------------------------------------------------------------
+</br></br>
+## ***.프로젝트 진행 순서***
+
+* #####  요구 사항 분석 - 유스케이스 (uml)</br>
+* #####  DB 설계 - ERD</br>
+* #####  화면 출력 -> 스토리 보드 (블럭다이아 그램)</br>
+  ##### &nbsp; 피그마, 포토샵 , 파워포인트</br>
+* #####  Sequence Diagram</br>
+
+</br></br></br>
+
+### 에너 테이션 사용으로 스프링 컨테이너에 주입 시킨다
+####  &nbsp; + component- scan 
+####  &nbsp; = 의존성 주입 
+
+</br></br>
 
 (기존 방식:  servlet- context 에서 컴포넌트 스캔을 경로 적용 시킨다.)  
 그러나 Sample의 경우 root-context 에서 별개로 적용시킨다.
@@ -9,175 +24,174 @@
 
 
 
-
-이미지
-
+![화면 캡처 2024-12-09 150423](https://github.com/user-attachments/assets/5f245bda-db9c-44d9-bf70-7f0ba8fd5228)
 
 
 
 
-프로젝트 진행 순서 
-
-1) 요구 사항 분석 - 유스케이스 (uml)
-2) DB 설계 - ERD
-3) 화면 출력 -> 스토리 보드 (블럭다이아 그램)
-- 피그마, 포토샵 , 파워포인트
-4) Sequence Diagram
+![화면 캡처 2024-12-09 144440](https://github.com/user-attachments/assets/162aa2a2-fa73-49f5-82e5-597eb62be51b)
 
 
 
+#### SampleTest 실행을 위해 @ContextConfiguration()에 root 파일 경로를 src부터 설정에서 가져와서 복사해서 경로 지정한다.
+#### 어노테이션이 자동으로 먹지 않으면 
 
 
-이미지
+![화면 캡처 2024-12-09 144223](https://github.com/user-attachments/assets/7b41c192-7b48-4fa6-9dc1-4af55f721ecb)
 
+#### 폼에서 프레임워크 테스트를 추가(+ 수정)한다.
 
-
-
-SampleTest 실행을 위해 @ContextConfiguration()에 root 파일 경로를 src부터 설정에서 가져와서 복사해서 경로 지정한다.
-어노테이션이 자동으로 먹지 않으면 
-
-
-이미지
-폼에서 프레임워크 테스트를 추가(+ 수정)한다.
-
+</br></br> 
 
 테스트를 통해서 의존 관계가 실행 가능한지 알게 됨..!
-이미지
+
+![화면 캡처 2024-12-09 144722](https://github.com/user-attachments/assets/db580ff6-e09c-4e32-ab89-43a9d09f5ba7)
 
 
-레스토랑을 호텔에서 필요해서 가져오는 경우 
+
+ex) 레스토랑을 호텔에서 필요해서 가져오는 경우 
 SampleHotel 을 적용 시켜서 (복사,수정)
 
-
-package com.company.sample;
-
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import lombok.extern.log4j.Log4j;
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")  
-@Log4j
-
-public class HotelTest {
-	
-	@Autowired
-	private SampleHotel hotel;
-	
-	
-	
-	@Test
-	public void testExist() {
-		
-		assertNotNull(hotel);
-		
-		log.info(hotel);
-		log.info("------------------");
-		log.info(hotel.getChef());
-	}
-}
+</br></br> 
 
 
+			package com.company.sample;
+			
+			import static org.junit.Assert.assertNotNull;
+			
+			import org.junit.Test;
+			import org.junit.runner.RunWith;
+			import org.springframework.beans.factory.annotation.Autowired;
+			import org.springframework.test.context.ContextConfiguration;
+			import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+			
+			import lombok.extern.log4j.Log4j;
+			
+			@RunWith(SpringJUnit4ClassRunner.class)
+			@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")  
+			@Log4j
+			
+			public class HotelTest {
+				
+				@Autowired
+				private SampleHotel hotel;
+				
+				
+				
+				@Test
+				public void testExist() {
+					
+					assertNotNull(hotel);
+					
+					log.info(hotel);
+					log.info("------------------");
+					log.info(hotel.getChef());
+				}
+			}
 
-이미지
+
+
+위코드의 콘솔창을 보면 아래와 같다
+![화면 캡처 2024-12-09 145428](https://github.com/user-attachments/assets/1881bd07-f1bc-4a52-a1c9-901ea07bf57f)
+
 
 객체 하나만 만들어 논 후 ~  다른곳에서 의존하고 써먹음  그럼으로  SampleHotel이 주가 되고 제어가 역전됨
-new 대신
-  제어의 역전  IOC / DI 의존성 주입
+#### new 대신
+####  &nbsp; 제어의 역전  IOC / DI 의존성 주입
 
-IOC 제어의 역전 (Inversion of Control)
-
-DI(Dependency Injection) : 의존성 주입
-
-의존성 주입은 제어 역전의 방법 중의 하나로, 
-
-사용할 객체를 직접 생성하지 않고 외부 컨테이너가 생성한 객체를 주입받아 사용하는 방식을 말한다.
+--------------------------------------------------------------------------------------------------------------
+</br></br>
+## ***.IOC 제어의 역전 (Inversion of Control)*** 
 
 
+#### DI(Dependency Injection) : 의존성 주입
+
+#### 의존성 주입은 제어 역전의 방법 중의 하나로, 
+
+#### 사용할 객체를 직접 생성하지 않고 외부 컨테이너가 생성한 객체를 주입받아 사용하는 방식을 말한다.
 
 
 
 
-+ DataBase 연동하기
 
 
-이미지
-이미지
+* #####  DataBase 연동하기
+
+
+![화면 캡처 2024-12-09 152814](https://github.com/user-attachments/assets/c7595f50-a9d2-467c-9b7d-b1c1d0a34e41)
+
+![화면 캡처 2024-12-09 153539](https://github.com/user-attachments/assets/302da465-e10e-44c4-bac7-39015a03cbff)
 
 
 
 data 소스 연결하는 것 Hikari 
-
-	<!-- Root Context: defines shared resources visible to all other web components -->
-	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-		<property name = "driverClassName"  value="oracle.jdbc.OracleDriver"/>
-		<property name = "jdbcUrl"  value="jdbc:oracle:thin:@localhost:1521:XE"/>
-		<property name = "username"  value="kmr"/>
-		<property name = "password"  value="kmr"/>
-	</bean>
-	
-
-<!-- HikariCP configuration -->
-	<bean id="dataSoarce" class="com.zaxxer.hikari.HikariDataSource" destroy-method= "close">
-		<constructor-arg ref="hikariConfig" />
-	
-	</bean>
-	
-	
-	<context:component-scan base-package="com.company.sample"></context:component-scan>
-</beans>
-
-
-빈 추가는 스프링 추가 하는 것 
+			
+				<!-- Root Context: defines shared resources visible to all other web components -->
+				<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+					<property name = "driverClassName"  value="oracle.jdbc.OracleDriver"/>
+					<property name = "jdbcUrl"  value="jdbc:oracle:thin:@localhost:1521:XE"/>
+					<property name = "username"  value="kmr"/>
+					<property name = "password"  value="kmr"/>
+				</bean>
+				
+			
+			<!-- HikariCP configuration -->
+				<bean id="dataSoarce" class="com.zaxxer.hikari.HikariDataSource" destroy-method= "close">
+					<constructor-arg ref="hikariConfig" />
+				
+				</bean>
+				
+				
+				<context:component-scan base-package="com.company.sample"></context:component-scan>
+			</beans>
 
 
-이미지
+#### 빈 추가는 스프링 추가 하는 것 
 
 
+![화면 캡처 2024-12-09 162910](https://github.com/user-attachments/assets/0d6337ef-d001-474e-8627-1333257a0f43)
 
 
+</br></br>
 
-데이터 소스 테스트 폴더에
-@Test
-testMyBatis()추가 -junitTest 실행해서 
-root -context 안에 ㅡMybatis 가 잘 설치 되었나 확인한다.
-** 실제 에러가 나서 확인해보니 dataSource 를 오타남 두 mybatis 관련 라이브러리 이름이 일치 해야 함
+#### 데이터 소스 테스트 폴더에
+</br>
+@Test </br> 
+testMyBatis()추가 -junitTest 실행해서 </br> 
+root -context 안에 ㅡMybatis 가 잘 설치 되었나 확인한다.</br> 
 
-처음에 Green신호 받았어도 Connection test con- 이 연결된 데이터 소스 히카리 bean name= "dataSource"  으로 지정했어야 하는데 
-여기서 오타가 나면  MyBatis 설치 후 바티스가 히카리 신호를 받을 수 없음으로 
-바티스에서 dataSource를 호출했는데  property name 을 찾을 수 없다고 떴음...!! 
+#### ** 실제 에러가 나서 확인해보니 dataSource 를 오타남 두 mybatis 관련 라이브러리 이름이 일치 해야 함</br> 
+</br>
+처음에 Green신호 받았어도 Connection test con- 이 연결된 데이터 소스 히카리 bean name= "dataSource"  으로 지정했어야 하는데 </br>
+여기서 오타가 나면  MyBatis 설치 후 바티스가 히카리 신호를 받을 수 없음으로 </br>
 
-그래서  루트에 빈을 추가할 때  Hikari cp의   Bean name ="" 과  Mybatis property name="" 오타없이 일치바람..!!!
+#### 바티스에서 dataSource를 호출했는데  property name 을 찾을 수 없다고 떴음...!! </br>
+</br>
+그래서  루트에 빈을 추가할 때  Hikari cp의   Bean name ="" 과  Mybatis property name="" 오타없이 일치바람..!!! </br>
 
+</br>
 
-
-
-
-이미지
-
-
+![화면 캡처 2024-12-09 163307](https://github.com/user-attachments/assets/41dc2f91-f7d3-4872-be81-2c63731197ee)
 
 
 
-package com.company.mapper;
-
-import org.apache.ibatis.annotations.Select;
-
-public interface TimeMapper {
-	@Select("SELECT sysdate FROM dual")
-	public 	String getTime();
-
-}
+</br>
 
 
 
- Mapper class 컨트롤러 밑 폴더에 추가
+			package com.company.mapper;
+			
+			import org.apache.ibatis.annotations.Select;
+			
+			public interface TimeMapper {
+				@Select("SELECT sysdate FROM dual")
+				public 	String getTime();
+			
+			}
+
+
+
+#### Mapper class 컨트롤러 밑 폴더에 추가
 
 
 
